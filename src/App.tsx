@@ -54,20 +54,20 @@ function App() {
     <div className="flex min-h-full flex-col">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-5 px-4 py-5 md:px-6 md:py-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <main className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-3 px-4 py-3 md:px-6 md:py-4">
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
           <ModeSelector value={mode} onChange={(m) => { setMode(m); setActivePresetId(null); }} />
           <PresetBar activeId={activePresetId} onApply={applyPreset} />
         </div>
 
         {mode === 'single' && (
-          <div className="grid grid-cols-1">
+          <div className="mx-auto w-full max-w-4xl">
             <ImagePane condition={conditions[0]} onChange={(c) => update(0, c)} large />
           </div>
         )}
 
         {mode === 'side-by-side' && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {conditions.slice(0, visibleCount).map((c, i) => (
               <ImagePane key={i} condition={c} onChange={(next) => update(i, next)} label={`Pane ${i + 1}`} />
             ))}
@@ -75,7 +75,7 @@ function App() {
         )}
 
         {mode === 'quad' && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {conditions.slice(0, visibleCount).map((c, i) => (
               <ImagePane key={i} condition={c} onChange={(next) => update(i, next)} label={`Pane ${i + 1}`} />
             ))}
@@ -92,10 +92,8 @@ function App() {
         )}
       </main>
 
-      <footer className="border-t border-slate-200 bg-white px-4 py-4 text-center text-xs text-slate-500">
-        <p>
-          Static viewer for the UNCG teff histology study. Built for internal lab use — for analysis, download the original TIF and open in ImageJ.
-        </p>
+      <footer className="border-t border-slate-200 bg-white px-4 py-2 text-center text-[11px] text-slate-500">
+        Click any image to zoom · Download links offer PNG (web) or TIF (original).
       </footer>
     </div>
   );

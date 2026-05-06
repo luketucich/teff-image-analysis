@@ -20,7 +20,8 @@ export function CrossfadeViewer({
   const imageB = findImage(conditionB.tissue, conditionB.diet, conditionB.treatment);
 
   // Position is the percent of the container width at which the divider sits.
-  // The B image is revealed on the LEFT (0 → fully A, 100 → fully B).
+  // A is on the LEFT, B is on the RIGHT — selector order matches visual order.
+  // pos=0 → fully B; pos=100 → fully A; pos=50 → split down the middle.
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
@@ -73,16 +74,16 @@ export function CrossfadeViewer({
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-3 md:grid-cols-2">
-        <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
-          <ConditionSelector value={conditionA} onChange={onChangeA} label="Image A · revealed on right" />
-          <div className="mt-2 flex items-center justify-between text-sm text-slate-700">
+        <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
+          <ConditionSelector value={conditionA} onChange={onChangeA} label="Left image (A)" />
+          <div className="mt-2 flex items-center justify-between gap-2 text-xs text-slate-600">
             <span className="truncate">{imageA.label}</span>
             <DownloadButton image={imageA} />
           </div>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
-          <ConditionSelector value={conditionB} onChange={onChangeB} label="Image B · revealed on left" />
-          <div className="mt-2 flex items-center justify-between text-sm text-slate-700">
+        <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
+          <ConditionSelector value={conditionB} onChange={onChangeB} label="Right image (B)" />
+          <div className="mt-2 flex items-center justify-between gap-2 text-xs text-slate-600">
             <span className="truncate">{imageB.label}</span>
             <DownloadButton image={imageB} />
           </div>
@@ -91,35 +92,35 @@ export function CrossfadeViewer({
 
       <div
         ref={containerRef}
-        className="relative w-full select-none overflow-hidden rounded-lg border border-slate-200 bg-slate-900 shadow-sm"
+        className="relative mx-auto w-full max-w-4xl select-none overflow-hidden rounded-lg border border-slate-200 bg-slate-900 shadow-sm"
         style={{ aspectRatio: '1920 / 1200' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        {/* Base layer = Image A (full width) */}
-        <img
-          src={imageA.pngUrl}
-          alt={imageA.label}
-          draggable={false}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        {/* Top layer = Image B, clipped to the LEFT portion using clip-path */}
+        {/* Base layer = Image B (revealed on the RIGHT when A is clipped away) */}
         <img
           src={imageB.pngUrl}
           alt={imageB.label}
           draggable={false}
           className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Top layer = Image A, clipped so only the LEFT `pos%` of it shows */}
+        <img
+          src={imageA.pngUrl}
+          alt={imageA.label}
+          draggable={false}
+          className="absolute inset-0 h-full w-full object-cover"
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
         />
 
-        {/* Corner labels */}
+        {/* Corner labels — A on left because A occupies the left side */}
         <span className="tag pointer-events-none absolute left-3 top-3 rounded bg-black/65 px-2 py-1 text-white">
-          B · {imageB.posterPanel}
+          A · {imageA.posterPanel}
         </span>
         <span className="tag pointer-events-none absolute right-3 top-3 rounded bg-black/65 px-2 py-1 text-white">
-          A · {imageA.posterPanel}
+          B · {imageB.posterPanel}
         </span>
 
         {/* Divider line */}
@@ -148,9 +149,8 @@ export function CrossfadeViewer({
         </button>
       </div>
 
-      <p className="text-xs text-slate-500">
-        Drag the divider to crossfade between images. Use ← / → arrows for fine control (Shift = ×5; Home / End = endpoints).
-        Both images are H&E, 20× — scale bar burned into the image is 100 µm.
+      <p className="text-center text-xs text-slate-500">
+        Drag the divider · ← / → for fine control (Shift = ×5)
       </p>
     </div>
   );

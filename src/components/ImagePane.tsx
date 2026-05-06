@@ -18,7 +18,7 @@ export function ImagePane({ condition, onChange, label, large }: Props) {
   const [zoomed, setZoomed] = useState(false);
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
+    <div className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
       <ConditionSelector value={condition} onChange={onChange} label={label} />
 
       <button
@@ -31,7 +31,7 @@ export function ImagePane({ condition, onChange, label, large }: Props) {
           src={image.pngUrl}
           alt={image.label}
           loading="lazy"
-          className={`block w-full object-contain ${large ? 'max-h-[70vh]' : 'max-h-[42vh]'}`}
+          className={`mx-auto block w-full object-contain ${large ? 'max-h-[58vh]' : 'max-h-[34vh]'}`}
         />
         <span className="tag pointer-events-none absolute left-2 top-2 rounded bg-black/60 px-2 py-1 text-white">
           {treatmentTag(condition)} · {dietTag(condition)}
@@ -45,7 +45,7 @@ export function ImagePane({ condition, onChange, label, large }: Props) {
       </button>
 
       <div className="flex items-center justify-between gap-2">
-        <span className="truncate text-sm font-medium text-slate-700">{image.label}</span>
+        <span className="truncate text-xs font-medium text-slate-600">{image.label}</span>
         <DownloadButton image={image} />
       </div>
 
