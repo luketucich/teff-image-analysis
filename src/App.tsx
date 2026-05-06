@@ -15,7 +15,6 @@ const DEFAULTS: Condition[] = [
 
 function App() {
   const [mode, setMode] = useState<Mode>('crossfade');
-  // Always keep four slots; modes consume 1, 2, 4, or 2 (crossfade) of them.
   const [conditions, setConditions] = useState<Condition[]>(DEFAULTS);
   const [activePresetId, setActivePresetId] = useState<string | null>(
     PRESETS[0]?.id ?? null,
@@ -51,12 +50,18 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-full flex-col bg-white">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-3 px-4 py-3 md:px-6 md:py-4">
-        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-          <ModeSelector value={mode} onChange={(m) => { setMode(m); setActivePresetId(null); }} />
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-7 px-6 py-7">
+        <div className="flex flex-col gap-4 border-b border-zinc-100 pb-4 md:flex-row md:items-end md:justify-between">
+          <ModeSelector
+            value={mode}
+            onChange={(m) => {
+              setMode(m);
+              setActivePresetId(null);
+            }}
+          />
           <PresetBar activeId={activePresetId} onApply={applyPreset} />
         </div>
 
@@ -67,17 +72,27 @@ function App() {
         )}
 
         {mode === 'side-by-side' && (
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
             {conditions.slice(0, visibleCount).map((c, i) => (
-              <ImagePane key={i} condition={c} onChange={(next) => update(i, next)} label={`Pane ${i + 1}`} />
+              <ImagePane
+                key={i}
+                condition={c}
+                onChange={(next) => update(i, next)}
+                label={`Pane ${i + 1}`}
+              />
             ))}
           </div>
         )}
 
         {mode === 'quad' && (
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
             {conditions.slice(0, visibleCount).map((c, i) => (
-              <ImagePane key={i} condition={c} onChange={(next) => update(i, next)} label={`Pane ${i + 1}`} />
+              <ImagePane
+                key={i}
+                condition={c}
+                onChange={(next) => update(i, next)}
+                label={`Pane ${i + 1}`}
+              />
             ))}
           </div>
         )}
@@ -92,8 +107,10 @@ function App() {
         )}
       </main>
 
-      <footer className="border-t border-slate-200 bg-white px-4 py-2 text-center text-[11px] text-slate-500">
-        Click any image to zoom · Download links offer PNG (web) or TIF (original).
+      <footer className="border-t border-zinc-100 px-6 py-4 text-center">
+        <p className="code">
+          Click any image to zoom · Download offers PNG (web) or TIF (original)
+        </p>
       </footer>
     </div>
   );

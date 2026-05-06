@@ -16,40 +16,46 @@ export interface Condition {
 interface Props {
   value: Condition;
   onChange: (next: Condition) => void;
-  /** Optional label shown above the selector (e.g. "Image A") */
-  label?: string;
+  /** Optional alignment for compact contexts */
+  align?: 'left' | 'right';
 }
 
-export function ConditionSelector({ value, onChange, label }: Props) {
+export function ConditionSelector({ value, onChange, align = 'left' }: Props) {
   return (
-    <div className="flex flex-col gap-1.5">
-      {label && (
-        <span className="tag text-slate-500">{label}</span>
-      )}
-      <div className="grid grid-cols-3 gap-2">
-        <Select
-          aria-label="Tissue"
-          value={value.tissue}
-          options={TISSUES}
-          onChange={(tissue) => onChange({ ...value, tissue: tissue as Tissue })}
-        />
-        <Select
-          aria-label="Diet"
-          value={value.diet}
-          options={DIETS}
-          onChange={(diet) => onChange({ ...value, diet: diet as Diet })}
-        />
-        <Select
-          aria-label="Treatment"
-          value={value.treatment}
-          options={TREATMENTS}
-          onChange={(treatment) =>
-            onChange({ ...value, treatment: treatment as Treatment })
-          }
-        />
-      </div>
+    <div
+      className={
+        'flex flex-wrap items-center gap-1 ' +
+        (align === 'right' ? 'justify-end' : 'justify-start')
+      }
+    >
+      <Select
+        aria-label="Tissue"
+        value={value.tissue}
+        options={TISSUES}
+        onChange={(tissue) => onChange({ ...value, tissue: tissue as Tissue })}
+      />
+      <Divider />
+      <Select
+        aria-label="Diet"
+        value={value.diet}
+        options={DIETS}
+        onChange={(diet) => onChange({ ...value, diet: diet as Diet })}
+      />
+      <Divider />
+      <Select
+        aria-label="Treatment"
+        value={value.treatment}
+        options={TREATMENTS}
+        onChange={(treatment) =>
+          onChange({ ...value, treatment: treatment as Treatment })
+        }
+      />
     </div>
   );
+}
+
+function Divider() {
+  return <span className="select-none text-zinc-300">·</span>;
 }
 
 interface SelectProps<T extends string> {
@@ -66,17 +72,32 @@ function Select<T extends string>({
   'aria-label': ariaLabel,
 }: SelectProps<T>) {
   return (
-    <select
-      aria-label={ariaLabel}
-      value={value}
-      onChange={(e) => onChange(e.target.value as T)}
-      className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 shadow-sm transition focus:border-(--color-poster-accent) focus:outline-none focus:ring-2 focus:ring-(--color-poster-accent)/30"
-    >
-      {options.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+    <span className="relative inline-flex items-center">
+      <select
+        aria-label={ariaLabel}
+        value={value}
+        onChange={(e) => onChange(e.target.value as T)}
+        className="bare cursor-pointer rounded-md py-1 pl-2 pr-6 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100 focus:bg-zinc-100 focus:outline-none"
+      >
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      <svg
+        className="pointer-events-none absolute right-1.5 text-zinc-400"
+        width="11"
+        height="11"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </span>
   );
 }

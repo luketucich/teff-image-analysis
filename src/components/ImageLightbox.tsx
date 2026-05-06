@@ -25,29 +25,29 @@ export function ImageLightbox({ image, onClose }: Props) {
       aria-modal="true"
       aria-label={`${image.label} (full resolution)`}
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/95 p-6"
     >
       <div
-        className="relative flex max-h-full max-w-full flex-col"
+        className="relative flex max-h-full max-w-full flex-col gap-3"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between gap-3 px-1 pb-2 text-white">
-          <div className="flex flex-col">
-            <span className="tag text-white/70">{image.posterPanel}</span>
+        <div className="flex items-center justify-between gap-3 text-zinc-200">
+          <div className="flex items-baseline gap-3">
             <span className="text-base font-medium">{image.label}</span>
+            <span className="code text-zinc-500">{image.posterPanel}</span>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-white/20 bg-white/10 px-3 py-1 text-sm font-medium text-white hover:bg-white/20"
+            className="rounded-md px-2 py-1 text-sm text-zinc-300 transition hover:bg-white/10 hover:text-white"
           >
-            Close (Esc)
+            Close · Esc
           </button>
         </div>
         <img
           src={image.pngUrl}
           alt={image.label}
-          className="block max-h-[88vh] max-w-[96vw] object-contain"
+          className="block max-h-[88vh] max-w-[96vw] rounded object-contain"
         />
       </div>
     </div>

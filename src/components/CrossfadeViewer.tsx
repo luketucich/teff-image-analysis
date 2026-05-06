@@ -19,9 +19,9 @@ export function CrossfadeViewer({
   const imageA = findImage(conditionA.tissue, conditionA.diet, conditionA.treatment);
   const imageB = findImage(conditionB.tissue, conditionB.diet, conditionB.treatment);
 
-  // Position is the percent of the container width at which the divider sits.
-  // A is on the LEFT, B is on the RIGHT — selector order matches visual order.
-  // pos=0 → fully B; pos=100 → fully A; pos=50 → split down the middle.
+  // pos = % from the LEFT at which the divider sits.
+  // A is on the LEFT, B is on the RIGHT.
+  // pos=0 → all B; pos=100 → all A.
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
@@ -48,7 +48,6 @@ export function CrossfadeViewer({
     (e.target as Element).releasePointerCapture?.(e.pointerId);
   };
 
-  // Keyboard fine-control on the divider button.
   const onKeyDown = (e: React.KeyboardEvent) => {
     const step = e.shiftKey ? 5 : 1;
     if (e.key === 'ArrowLeft') {
@@ -66,47 +65,46 @@ export function CrossfadeViewer({
     }
   };
 
-  // Reset when both images change (e.g. via preset).
   useEffect(() => {
     if (imageA.id === imageB.id) setPos(50);
   }, [imageA.id, imageB.id]);
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid gap-3 md:grid-cols-2">
-        <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
-          <ConditionSelector value={conditionA} onChange={onChangeA} label="Left image (A)" />
-          <div className="mt-2 flex items-center justify-between gap-2 text-xs text-slate-600">
-            <span className="truncate">{imageA.label}</span>
-            <DownloadButton image={imageA} />
+      <div className="grid grid-cols-2 gap-6 px-1">
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="label">Left · A</span>
+            <span className="code">{imageA.posterPanel}</span>
           </div>
+          <ConditionSelector value={conditionA} onChange={onChangeA} />
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm">
-          <ConditionSelector value={conditionB} onChange={onChangeB} label="Right image (B)" />
-          <div className="mt-2 flex items-center justify-between gap-2 text-xs text-slate-600">
-            <span className="truncate">{imageB.label}</span>
-            <DownloadButton image={imageB} />
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="label">Right · B</span>
+            <span className="code">{imageB.posterPanel}</span>
           </div>
+          <ConditionSelector value={conditionB} onChange={onChangeB} align="right" />
         </div>
       </div>
 
       <div
         ref={containerRef}
-        className="relative mx-auto w-full max-w-4xl select-none overflow-hidden rounded-lg border border-slate-200 bg-slate-900 shadow-sm"
+        className="relative mx-auto w-full max-w-4xl select-none overflow-hidden rounded-lg bg-zinc-950"
         style={{ aspectRatio: '1920 / 1200' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        {/* Base layer = Image B (revealed on the RIGHT when A is clipped away) */}
+        {/* Base layer = Image B (visible on the right when A is clipped away) */}
         <img
           src={imageB.pngUrl}
           alt={imageB.label}
           draggable={false}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        {/* Top layer = Image A, clipped so only the LEFT `pos%` of it shows */}
+        {/* Top layer = Image A, clipped to show only the LEFT pos% */}
         <img
           src={imageA.pngUrl}
           alt={imageA.label}
@@ -115,21 +113,13 @@ export function CrossfadeViewer({
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
         />
 
-        {/* Corner labels — A on left because A occupies the left side */}
-        <span className="tag pointer-events-none absolute left-3 top-3 rounded bg-black/65 px-2 py-1 text-white">
-          A · {imageA.posterPanel}
-        </span>
-        <span className="tag pointer-events-none absolute right-3 top-3 rounded bg-black/65 px-2 py-1 text-white">
-          B · {imageB.posterPanel}
-        </span>
-
-        {/* Divider line */}
+        {/* Subtle divider line */}
         <div
-          className="pointer-events-none absolute inset-y-0 w-[2px] bg-white/90 shadow-[0_0_0_1px_rgba(0,0,0,0.4)]"
-          style={{ left: `calc(${pos}% - 1px)` }}
+          className="pointer-events-none absolute inset-y-0 w-px bg-white/90"
+          style={{ left: `${pos}%` }}
         />
 
-        {/* Drag handle (also the focusable element for keyboard control) */}
+        {/* Drag handle (focusable for keyboard control) */}
         <button
           type="button"
           aria-label="Crossfade divider"
@@ -138,20 +128,39 @@ export function CrossfadeViewer({
           aria-valuenow={Math.round(pos)}
           role="slider"
           onKeyDown={onKeyDown}
-          className="absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize rounded-full border border-slate-300 bg-white p-2 shadow-md focus:outline-none focus:ring-2 focus:ring-(--color-poster-accent)"
-          style={{ left: `${pos}%` }}
+          className="group absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize rounded-full border border-zinc-300 bg-white shadow-md transition hover:scale-110 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+          style={{ left: `${pos}%`, padding: '0.4rem' }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-700">
-            <polyline points="15 18 9 12 15 6" />
-            <polyline points="9 18 3 12 9 6" transform="translate(15 0) scale(-1 1) translate(-15 0)" />
-            <polyline points="9 6 15 12 9 18" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-zinc-700"
+          >
+            <polyline points="9 18 3 12 9 6" />
+            <polyline points="15 6 21 12 15 18" />
           </svg>
         </button>
       </div>
 
-      <p className="text-center text-xs text-slate-500">
-        Drag the divider · ← / → for fine control (Shift = ×5)
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-1 text-xs">
+        <div className="flex items-center gap-3">
+          <span className="text-zinc-700">{imageA.label}</span>
+          <span className="text-zinc-300">·</span>
+          <span className="text-zinc-700">{imageB.label}</span>
+        </div>
+        <div className="flex items-center gap-3 text-zinc-500">
+          <span>Drag · arrow keys for fine control</span>
+          <span className="text-zinc-300">·</span>
+          <DownloadButton image={imageA} prefix="A" />
+          <DownloadButton image={imageB} prefix="B" />
+        </div>
+      </div>
     </div>
   );
 }

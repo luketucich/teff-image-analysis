@@ -3,9 +3,11 @@ import type { ImageEntry } from '../data/manifest';
 
 interface Props {
   image: ImageEntry;
+  /** Optional inline label to show before the icon (e.g. "A") */
+  prefix?: string;
 }
 
-export function DownloadButton({ image }: Props) {
+export function DownloadButton({ image, prefix }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,17 +32,19 @@ export function DownloadButton({ image }: Props) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-(--color-poster-accent)/30"
+        className="inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-300"
         aria-haspopup="menu"
         aria-expanded={open}
+        title={`Download ${image.label}`}
       >
+        {prefix && <span className="font-mono">{prefix}</span>}
         <svg
-          width="12"
-          height="12"
+          width="13"
+          height="13"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.2"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -48,32 +52,31 @@ export function DownloadButton({ image }: Props) {
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
-        Download
       </button>
       {open && (
         <div
           role="menu"
-          className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg"
+          className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-md border border-zinc-200 bg-white shadow-lg"
         >
           <a
             role="menuitem"
             href={image.pngUrl}
             download={`${image.id}.png`}
             onClick={() => setOpen(false)}
-            className="flex items-center justify-between px-3 py-2 text-sm text-slate-800 hover:bg-slate-50"
+            className="flex items-center justify-between px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-50"
           >
             <span>PNG (web)</span>
-            <span className="tag text-slate-400">1920×1200</span>
+            <span className="code">1920×1200</span>
           </a>
           <a
             role="menuitem"
             href={image.tifUrl}
             download={`${image.id}.tif`}
             onClick={() => setOpen(false)}
-            className="flex items-center justify-between border-t border-slate-100 px-3 py-2 text-sm text-slate-800 hover:bg-slate-50"
+            className="flex items-center justify-between border-t border-zinc-100 px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-50"
           >
             <span>TIF (original)</span>
-            <span className="tag text-slate-400">~7 MB</span>
+            <span className="code">~7 MB</span>
           </a>
         </div>
       )}

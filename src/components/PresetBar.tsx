@@ -6,7 +6,7 @@ export interface Preset {
   label: string;
   description: string;
   mode: Mode;
-  conditions: Condition[]; // Length must match the mode's pane count or 2 for crossfade
+  conditions: Condition[];
 }
 
 export const PRESETS: Preset[] = [
@@ -73,8 +73,8 @@ interface Props {
 
 export function PresetBar({ activeId, onApply }: Props) {
   return (
-    <div className="flex flex-wrap items-center gap-1.5">
-      <span className="tag mr-1 text-slate-400">Presets</span>
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
+      <span className="label">Quick</span>
       {PRESETS.map((preset) => {
         const active = preset.id === activeId;
         return (
@@ -84,10 +84,10 @@ export function PresetBar({ activeId, onApply }: Props) {
             onClick={() => onApply(preset)}
             title={preset.description}
             className={
-              'rounded-full border px-2.5 py-1 text-xs font-medium transition ' +
+              'transition focus:outline-none ' +
               (active
-                ? 'border-(--color-poster-blue) bg-(--color-poster-blue) text-white'
-                : 'border-slate-300 bg-white text-slate-700 hover:border-(--color-poster-accent) hover:text-(--color-poster-accent)')
+                ? 'font-medium text-zinc-900 underline decoration-zinc-900 decoration-1 underline-offset-4'
+                : 'text-zinc-500 hover:text-zinc-900')
             }
           >
             {preset.label}
