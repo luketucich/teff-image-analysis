@@ -50,20 +50,23 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-full flex-col bg-white">
+    <div className="flex min-h-full flex-col bg-white dark:bg-zinc-950">
       <Header />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-7 px-6 py-7">
-        <div className="flex flex-col gap-4 border-b border-zinc-100 pb-4 md:flex-row md:items-end md:justify-between">
-          <ModeSelector
-            value={mode}
-            onChange={(m) => {
-              setMode(m);
-              setActivePresetId(null);
-            }}
-          />
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-6 py-6">
+        <section className="flex flex-col gap-4 border-b border-zinc-100 pb-5 dark:border-zinc-900">
+          <div className="flex flex-col gap-1.5">
+            <span className="label">Layout</span>
+            <ModeSelector
+              value={mode}
+              onChange={(m) => {
+                setMode(m);
+                setActivePresetId(null);
+              }}
+            />
+          </div>
           <PresetBar activeId={activePresetId} onApply={applyPreset} />
-        </div>
+        </section>
 
         {mode === 'single' && (
           <div className="mx-auto w-full max-w-4xl">
@@ -107,7 +110,7 @@ function App() {
         )}
       </main>
 
-      <footer className="border-t border-zinc-100 px-6 py-4 text-center">
+      <footer className="border-t border-zinc-100 px-6 py-4 text-center dark:border-zinc-900">
         <p className="code">
           Click any image to zoom · Download offers PNG (web) or TIF (original)
         </p>

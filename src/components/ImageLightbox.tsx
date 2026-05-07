@@ -39,7 +39,7 @@ export function ImageLightbox({ image, onClose }: Props) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-2 py-1 text-sm text-zinc-300 transition hover:bg-white/10 hover:text-white"
+            className="rounded-md border border-white/15 bg-white/5 px-3 py-1 text-sm text-zinc-200 transition hover:bg-white/10 hover:text-white"
           >
             Close · Esc
           </button>

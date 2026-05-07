@@ -14,7 +14,7 @@ interface Props {
 
 export function ModeSelector({ value, onChange }: Props) {
   return (
-    <div className="flex items-center gap-6 text-sm">
+    <div className="inline-flex items-center gap-0.5 rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-900">
       {OPTIONS.map((opt) => {
         const active = opt.value === value;
         return (
@@ -25,16 +25,13 @@ export function ModeSelector({ value, onChange }: Props) {
             title={opt.hint}
             aria-pressed={active}
             className={
-              'relative pb-2 transition focus:outline-none ' +
+              'rounded-md px-3 py-1.5 text-sm transition focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-700 ' +
               (active
-                ? 'font-medium text-zinc-900'
-                : 'text-zinc-500 hover:text-zinc-900')
+                ? 'bg-white font-medium text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-zinc-100'
+                : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100')
             }
           >
             {opt.label}
-            {active && (
-              <span className="absolute inset-x-0 -bottom-px h-px bg-zinc-900" />
-            )}
           </button>
         );
       })}

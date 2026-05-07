@@ -12,6 +12,17 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
+    <script>
+      // Apply the theme synchronously before render to avoid a flash.
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = saved === 'light' || saved === 'dark' ? saved : prefersDark ? 'dark' : 'light';
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+        } catch (_) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

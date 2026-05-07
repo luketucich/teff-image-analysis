@@ -12,8 +12,8 @@ export interface Preset {
 export const PRESETS: Preset[] = [
   {
     id: 'liver-hf-control-vs-brown',
-    label: 'Brown teff rescue',
-    description: 'Liver, HF Control vs HF Brown Teff — slide to see steatosis vanish.',
+    label: 'Liver: HF Control vs Brown Teff',
+    description: 'Crossfade — does brown teff prevent steatosis on a high-fat diet?',
     mode: 'crossfade',
     conditions: [
       { tissue: 'liver', diet: 'high-fat', treatment: 'control' },
@@ -22,8 +22,8 @@ export const PRESETS: Preset[] = [
   },
   {
     id: 'liver-hf-brown-vs-ivory',
-    label: 'Brown vs Ivory',
-    description: 'Liver, HF — compare the two teff varieties.',
+    label: 'Liver: Brown vs Ivory Teff (HF)',
+    description: 'Crossfade — does the teff variety matter on a high-fat diet?',
     mode: 'crossfade',
     conditions: [
       { tissue: 'liver', diet: 'high-fat', treatment: 'brown-teff' },
@@ -32,8 +32,8 @@ export const PRESETS: Preset[] = [
   },
   {
     id: 'liver-hf-row',
-    label: 'Liver overview',
-    description: 'Quad: LF Control reference + all three HF treatments.',
+    label: 'Liver: 4-condition overview',
+    description: 'Quad — LF Control as baseline + the three HF treatments.',
     mode: 'quad',
     conditions: [
       { tissue: 'liver', diet: 'low-fat', treatment: 'control' },
@@ -44,8 +44,8 @@ export const PRESETS: Preset[] = [
   },
   {
     id: 'kidney-hf-row',
-    label: 'Kidney overview',
-    description: 'Quad: LF Control reference + all three HF treatments (kidney).',
+    label: 'Kidney: 4-condition overview',
+    description: 'Quad — kidney equivalent of the liver overview.',
     mode: 'quad',
     conditions: [
       { tissue: 'kidney', diet: 'low-fat', treatment: 'control' },
@@ -56,8 +56,8 @@ export const PRESETS: Preset[] = [
   },
   {
     id: 'liver-diet-effect',
-    label: 'Diet alone',
-    description: 'Liver, LF vs HF Control — what high fat does by itself.',
+    label: 'Liver: LF vs HF Control',
+    description: 'Crossfade — what does the high-fat diet do on its own (no teff)?',
     mode: 'crossfade',
     conditions: [
       { tissue: 'liver', diet: 'low-fat', treatment: 'control' },
@@ -73,8 +73,8 @@ interface Props {
 
 export function PresetBar({ activeId, onApply }: Props) {
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
-      <span className="label">Quick</span>
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="label mr-1">Presets</span>
       {PRESETS.map((preset) => {
         const active = preset.id === activeId;
         return (
@@ -84,10 +84,10 @@ export function PresetBar({ activeId, onApply }: Props) {
             onClick={() => onApply(preset)}
             title={preset.description}
             className={
-              'transition focus:outline-none ' +
+              'rounded-full border px-3 py-1 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-700 ' +
               (active
-                ? 'font-medium text-zinc-900 underline decoration-zinc-900 decoration-1 underline-offset-4'
-                : 'text-zinc-500 hover:text-zinc-900')
+                ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
+                : 'border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-800')
             }
           >
             {preset.label}

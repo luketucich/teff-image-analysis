@@ -16,46 +16,48 @@ export interface Condition {
 interface Props {
   value: Condition;
   onChange: (next: Condition) => void;
-  /** Optional alignment for compact contexts */
-  align?: 'left' | 'right';
 }
 
-export function ConditionSelector({ value, onChange, align = 'left' }: Props) {
+export function ConditionSelector({ value, onChange }: Props) {
   return (
-    <div
-      className={
-        'flex flex-wrap items-center gap-1 ' +
-        (align === 'right' ? 'justify-end' : 'justify-start')
-      }
-    >
-      <Select
-        aria-label="Tissue"
-        value={value.tissue}
-        options={TISSUES}
-        onChange={(tissue) => onChange({ ...value, tissue: tissue as Tissue })}
-      />
-      <Divider />
-      <Select
-        aria-label="Diet"
-        value={value.diet}
-        options={DIETS}
-        onChange={(diet) => onChange({ ...value, diet: diet as Diet })}
-      />
-      <Divider />
-      <Select
-        aria-label="Treatment"
-        value={value.treatment}
-        options={TREATMENTS}
-        onChange={(treatment) =>
-          onChange({ ...value, treatment: treatment as Treatment })
-        }
-      />
+    <div className="flex flex-wrap items-center gap-2">
+      <Field label="Tissue">
+        <Select
+          aria-label="Tissue"
+          value={value.tissue}
+          options={TISSUES}
+          onChange={(tissue) => onChange({ ...value, tissue: tissue as Tissue })}
+        />
+      </Field>
+      <Field label="Diet">
+        <Select
+          aria-label="Diet"
+          value={value.diet}
+          options={DIETS}
+          onChange={(diet) => onChange({ ...value, diet: diet as Diet })}
+        />
+      </Field>
+      <Field label="Treatment">
+        <Select
+          aria-label="Treatment"
+          value={value.treatment}
+          options={TREATMENTS}
+          onChange={(treatment) =>
+            onChange({ ...value, treatment: treatment as Treatment })
+          }
+        />
+      </Field>
     </div>
   );
 }
 
-function Divider() {
-  return <span className="select-none text-zinc-300">·</span>;
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="flex flex-col gap-1">
+      <span className="label">{label}</span>
+      {children}
+    </label>
+  );
 }
 
 interface SelectProps<T extends string> {
@@ -77,7 +79,7 @@ function Select<T extends string>({
         aria-label={ariaLabel}
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
-        className="bare cursor-pointer rounded-md py-1 pl-2 pr-6 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100 focus:bg-zinc-100 focus:outline-none"
+        className="bare cursor-pointer rounded-md border border-zinc-200 bg-white py-1.5 pl-3 pr-8 text-sm font-medium text-zinc-900 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:focus:border-zinc-100 dark:focus:ring-zinc-700"
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -86,7 +88,7 @@ function Select<T extends string>({
         ))}
       </select>
       <svg
-        className="pointer-events-none absolute right-1.5 text-zinc-400"
+        className="pointer-events-none absolute right-2.5 text-zinc-500 dark:text-zinc-400"
         width="11"
         height="11"
         viewBox="0 0 24 24"

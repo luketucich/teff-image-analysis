@@ -71,21 +71,25 @@ export function CrossfadeViewer({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-6 px-1">
-        <div className="flex flex-col gap-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="label">Left · A</span>
-            <span className="code">{imageA.posterPanel}</span>
-          </div>
-          <ConditionSelector value={conditionA} onChange={onChangeA} />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="label">Right · B</span>
-            <span className="code">{imageB.posterPanel}</span>
-          </div>
-          <ConditionSelector value={conditionB} onChange={onChangeB} align="right" />
-        </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <PaneHeader
+          label="Left · A"
+          posterPanel={imageA.posterPanel}
+          condition={conditionA}
+          onChange={onChangeA}
+          imageA={imageA}
+          imageB={imageB}
+          which="A"
+        />
+        <PaneHeader
+          label="Right · B"
+          posterPanel={imageB.posterPanel}
+          condition={conditionB}
+          onChange={onChangeB}
+          imageA={imageA}
+          imageB={imageB}
+          which="B"
+        />
       </div>
 
       <div
@@ -128,8 +132,8 @@ export function CrossfadeViewer({
           aria-valuenow={Math.round(pos)}
           role="slider"
           onKeyDown={onKeyDown}
-          className="group absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize rounded-full border border-zinc-300 bg-white shadow-md transition hover:scale-110 focus:outline-none focus:ring-2 focus:ring-zinc-900"
-          style={{ left: `${pos}%`, padding: '0.4rem' }}
+          className="group absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize rounded-full border border-zinc-300 bg-white p-1.5 shadow-md transition hover:scale-110 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+          style={{ left: `${pos}%` }}
         >
           <svg
             width="14"
@@ -148,19 +152,42 @@ export function CrossfadeViewer({
         </button>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-1 text-xs">
+      <p className="text-center text-xs text-zinc-500 dark:text-zinc-400">
+        Drag the divider · ← / → for fine control · Shift = ×5
+      </p>
+    </div>
+  );
+}
+
+interface PaneHeaderProps {
+  label: string;
+  posterPanel: string;
+  condition: Condition;
+  onChange: (next: Condition) => void;
+  imageA: ReturnType<typeof findImage>;
+  imageB: ReturnType<typeof findImage>;
+  which: 'A' | 'B';
+}
+
+function PaneHeader({
+  label,
+  posterPanel,
+  condition,
+  onChange,
+  imageA,
+  imageB,
+  which,
+}: PaneHeaderProps) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2">
+        <span className="label">{label}</span>
         <div className="flex items-center gap-3">
-          <span className="text-zinc-700">{imageA.label}</span>
-          <span className="text-zinc-300">·</span>
-          <span className="text-zinc-700">{imageB.label}</span>
-        </div>
-        <div className="flex items-center gap-3 text-zinc-500">
-          <span>Drag · arrow keys for fine control</span>
-          <span className="text-zinc-300">·</span>
-          <DownloadButton image={imageA} prefix="A" />
-          <DownloadButton image={imageB} prefix="B" />
+          <span className="code">{posterPanel}</span>
+          <DownloadButton image={which === 'A' ? imageA : imageB} prefix={which} />
         </div>
       </div>
+      <ConditionSelector value={condition} onChange={onChange} />
     </div>
   );
 }

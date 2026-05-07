@@ -18,13 +18,15 @@ export function ImagePane({ condition, onChange, label, large }: Props) {
   const [zoomed, setZoomed] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between gap-2 px-1">
-        <div className="flex items-center gap-3">
-          {label && <span className="label">{label}</span>}
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div className="flex flex-wrap items-end gap-3">
+          {label && (
+            <span className="label self-end pb-2">{label}</span>
+          )}
           <ConditionSelector value={condition} onChange={onChange} />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 self-end pb-0.5">
           <span className="code">{image.posterPanel}</span>
           <DownloadButton image={image} />
         </div>
@@ -33,7 +35,7 @@ export function ImagePane({ condition, onChange, label, large }: Props) {
       <button
         type="button"
         onClick={() => setZoomed(true)}
-        className="group block overflow-hidden rounded-lg bg-zinc-950 ring-zinc-900 transition focus:outline-none focus:ring-2"
+        className="group block overflow-hidden rounded-lg bg-zinc-950 ring-zinc-900 transition focus:outline-none focus:ring-2 dark:bg-zinc-950 dark:ring-zinc-200"
         aria-label={`Zoom in on ${image.label}`}
       >
         <img
