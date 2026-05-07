@@ -79,7 +79,8 @@ function Select<T extends string>({
         aria-label={ariaLabel}
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
-        className="bare cursor-pointer rounded-md border border-zinc-200 bg-white py-1.5 pl-3 pr-8 text-sm font-medium text-zinc-900 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:focus:border-zinc-100 dark:focus:ring-zinc-700"
+        style={{ WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none', backgroundImage: 'none' }}
+        className="cursor-pointer rounded-md border border-zinc-200 bg-white py-1.5 pl-3 pr-8 text-sm font-medium text-zinc-900 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:focus:border-zinc-100 dark:focus:ring-zinc-700"
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
