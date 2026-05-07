@@ -27,14 +27,19 @@ export function ImagePane({ condition, onChange, label, large }: Props) {
       <button
         type="button"
         onClick={() => setZoomed(true)}
-        className="group block overflow-hidden rounded-lg bg-zinc-950 ring-zinc-900 transition focus:outline-none focus:ring-2 dark:bg-zinc-950 dark:ring-zinc-200"
         aria-label={`Zoom in on ${image.label}`}
+        className="group mx-auto block w-full cursor-zoom-in overflow-hidden rounded-lg bg-zinc-950 ring-0 ring-zinc-300 transition hover:ring-2 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:ring-zinc-700 dark:focus:ring-zinc-100"
+        style={{
+          aspectRatio: '1920 / 1200',
+          maxWidth: large ? 'min(100%, calc(60vh * 1.6))' : '100%',
+        }}
       >
         <img
           src={image.pngUrl}
           alt={image.label}
           loading="lazy"
-          className={`mx-auto block w-full object-contain ${large ? 'max-h-[60vh]' : 'max-h-[34vh]'}`}
+          draggable={false}
+          className="block h-full w-full object-cover"
         />
       </button>
 

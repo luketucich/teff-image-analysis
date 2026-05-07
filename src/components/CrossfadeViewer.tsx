@@ -84,7 +84,7 @@ export function CrossfadeViewer({
 
       <div
         ref={containerRef}
-        className="relative mx-auto w-full max-w-4xl select-none overflow-hidden rounded-lg bg-zinc-950"
+        className="relative mx-auto w-full max-w-4xl cursor-ew-resize select-none overflow-hidden rounded-lg bg-zinc-950"
         style={{ aspectRatio: '1920 / 1200' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
