@@ -25,7 +25,7 @@ export function ModeSelector({ value, onChange }: Props) {
             title={opt.hint}
             aria-pressed={active}
             className={
-              'rounded-md px-3 py-1.5 text-sm transition focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-700 ' +
+              'whitespace-nowrap rounded-md px-3 py-1.5 text-sm transition focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-700 ' +
               (active
                 ? 'bg-white font-medium text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-zinc-100'
                 : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100')

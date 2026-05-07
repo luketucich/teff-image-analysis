@@ -72,11 +72,11 @@ export function CrossfadeViewer({
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <ImagePicker value={conditionA} onChange={onChangeA} label="Left · A" />
           <DownloadButton image={imageA} prefix="A" />
         </div>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <ImagePicker value={conditionB} onChange={onChangeB} label="Right · B" />
           <DownloadButton image={imageB} prefix="B" />
         </div>

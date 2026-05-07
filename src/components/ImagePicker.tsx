@@ -62,9 +62,9 @@ export function ImagePicker({ value, onChange, label }: Props) {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="inline-flex items-center gap-2 rounded-md border border-zinc-200 bg-white px-3 py-1.5 text-sm font-medium text-zinc-900 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:focus:border-zinc-100 dark:focus:ring-zinc-700"
+        className="inline-flex items-center gap-2 whitespace-nowrap rounded-md border border-zinc-200 bg-white px-3 py-1.5 text-sm font-medium text-zinc-900 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:focus:border-zinc-100 dark:focus:ring-zinc-700"
       >
-        {label && <span className="label mr-1">{label}</span>}
+        {label && <span className="label mr-1 hidden sm:inline">{label}</span>}
         <span>{chipText(value)}</span>
         <span className="code text-zinc-400 dark:text-zinc-500">{current.posterPanel.replace('Fig ', '')}</span>
         <svg
@@ -104,7 +104,7 @@ function Popover({ value, onSelect }: PopoverProps) {
   return (
     <div
       role="dialog"
-      className="absolute left-0 top-full z-30 mt-2 w-80 rounded-lg border border-zinc-200 bg-white p-3 shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
+      className="absolute left-0 top-full z-30 mt-2 w-[min(20rem,calc(100vw-2rem))] rounded-lg border border-zinc-200 bg-white p-3 shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
     >
       {TISSUES.map((t, ti) => (
         <div
