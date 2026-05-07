@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { findImage } from '../data/manifest';
-import { ConditionSelector, type Condition } from './ConditionSelector';
+import { ImagePicker, type Condition } from './ImagePicker';
 import { DownloadButton } from './DownloadButton';
 
 interface Props {
@@ -71,25 +71,15 @@ export function CrossfadeViewer({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <PaneHeader
-          label="Left · A"
-          posterPanel={imageA.posterPanel}
-          condition={conditionA}
-          onChange={onChangeA}
-          imageA={imageA}
-          imageB={imageB}
-          which="A"
-        />
-        <PaneHeader
-          label="Right · B"
-          posterPanel={imageB.posterPanel}
-          condition={conditionB}
-          onChange={onChangeB}
-          imageA={imageA}
-          imageB={imageB}
-          which="B"
-        />
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="flex items-center justify-between gap-2">
+          <ImagePicker value={conditionA} onChange={onChangeA} label="Left · A" />
+          <DownloadButton image={imageA} prefix="A" />
+        </div>
+        <div className="flex items-center justify-between gap-2">
+          <ImagePicker value={conditionB} onChange={onChangeB} label="Right · B" />
+          <DownloadButton image={imageB} prefix="B" />
+        </div>
       </div>
 
       <div
@@ -101,14 +91,12 @@ export function CrossfadeViewer({
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        {/* Base layer = Image B (visible on the right when A is clipped away) */}
         <img
           src={imageB.pngUrl}
           alt={imageB.label}
           draggable={false}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        {/* Top layer = Image A, clipped to show only the LEFT pos% */}
         <img
           src={imageA.pngUrl}
           alt={imageA.label}
@@ -117,13 +105,11 @@ export function CrossfadeViewer({
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
         />
 
-        {/* Subtle divider line */}
         <div
           className="pointer-events-none absolute inset-y-0 w-px bg-white/90"
           style={{ left: `${pos}%` }}
         />
 
-        {/* Drag handle (focusable for keyboard control) */}
         <button
           type="button"
           aria-label="Crossfade divider"
@@ -155,39 +141,6 @@ export function CrossfadeViewer({
       <p className="text-center text-xs text-zinc-500 dark:text-zinc-400">
         Drag the divider · ← / → for fine control · Shift = ×5
       </p>
-    </div>
-  );
-}
-
-interface PaneHeaderProps {
-  label: string;
-  posterPanel: string;
-  condition: Condition;
-  onChange: (next: Condition) => void;
-  imageA: ReturnType<typeof findImage>;
-  imageB: ReturnType<typeof findImage>;
-  which: 'A' | 'B';
-}
-
-function PaneHeader({
-  label,
-  posterPanel,
-  condition,
-  onChange,
-  imageA,
-  imageB,
-  which,
-}: PaneHeaderProps) {
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between gap-2">
-        <span className="label">{label}</span>
-        <div className="flex items-center gap-3">
-          <span className="code">{posterPanel}</span>
-          <DownloadButton image={which === 'A' ? imageA : imageB} prefix={which} />
-        </div>
-      </div>
-      <ConditionSelector value={condition} onChange={onChange} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import type { Condition } from './ConditionSelector';
+import type { Condition } from './ImagePicker';
 import type { Mode } from './ModeSelector';
 
 export interface Preset {

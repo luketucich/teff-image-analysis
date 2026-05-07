@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { findImage } from '../data/manifest';
-import { ConditionSelector, type Condition } from './ConditionSelector';
+import { ImagePicker, type Condition } from './ImagePicker';
 import { DownloadButton } from './DownloadButton';
 import { ImageLightbox } from './ImageLightbox';
 
 interface Props {
   condition: Condition;
   onChange: (next: Condition) => void;
-  /** Optional small label shown above the selector (e.g. "Pane 1") */
+  /** Optional small label shown on the chip (e.g. "Pane 1") */
   label?: string;
   /** Hero size for Single mode */
   large?: boolean;
@@ -18,18 +18,10 @@ export function ImagePane({ condition, onChange, label, large }: Props) {
   const [zoomed, setZoomed] = useState(false);
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="flex flex-wrap items-end gap-3">
-          {label && (
-            <span className="label self-end pb-2">{label}</span>
-          )}
-          <ConditionSelector value={condition} onChange={onChange} />
-        </div>
-        <div className="flex items-center gap-3 self-end pb-0.5">
-          <span className="code">{image.posterPanel}</span>
-          <DownloadButton image={image} />
-        </div>
+    <div className="flex flex-col gap-2.5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <ImagePicker value={condition} onChange={onChange} label={label} />
+        <DownloadButton image={image} />
       </div>
 
       <button

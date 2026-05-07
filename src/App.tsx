@@ -4,7 +4,7 @@ import { ModeSelector, type Mode } from './components/ModeSelector';
 import { ImagePane } from './components/ImagePane';
 import { CrossfadeViewer } from './components/CrossfadeViewer';
 import { PresetBar, PRESETS, type Preset } from './components/PresetBar';
-import type { Condition } from './components/ConditionSelector';
+import type { Condition } from './components/ImagePicker';
 
 const DEFAULTS: Condition[] = [
   { tissue: 'liver', diet: 'high-fat', treatment: 'control' },
@@ -54,17 +54,14 @@ function App() {
       <Header />
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-6 py-6">
-        <section className="flex flex-col gap-4 border-b border-zinc-100 pb-5 dark:border-zinc-900">
-          <div className="flex flex-col gap-1.5">
-            <span className="label">Layout</span>
-            <ModeSelector
-              value={mode}
-              onChange={(m) => {
-                setMode(m);
-                setActivePresetId(null);
-              }}
-            />
-          </div>
+        <section className="flex flex-col gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-900 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+          <ModeSelector
+            value={mode}
+            onChange={(m) => {
+              setMode(m);
+              setActivePresetId(null);
+            }}
+          />
           <PresetBar activeId={activePresetId} onApply={applyPreset} />
         </section>
 
